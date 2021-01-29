@@ -1,0 +1,141 @@
+					 				 +~~~~~~~~~~~~~~~~~~~~~~~~~~~+                             
+									 | AddressBook_Service_MySQL |
+									 +~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+_____________________________________________________________________________________________________________________________________________________________________________________________
+UC1: Ability to create a Address Book Service DB
+create database Address_Book_Service;												#To Create DataBase
+show databases;															#To View DataBase List
+USE Address_Book_Service;													#To Use DataBase
+
+_____________________________________________________________________________________________________________________________________________________________________________________________
+UC2:Ability to create a Address Book Table with first and last names, address, city, state, zip, phone number and email as its attributes
+create table addressBook													#To Create Table
+    -> (
+    -> firstName VARCHAR(32) NOT NULL, 												#First Name
+    -> lastName VARCHAR(32) NOT NUll,												#Last Name
+    -> address VARCHAR(150) NOT NULL,												#Address 
+    -> city VARCHAR(32) NOT NULL,												#City
+    -> state VARCHAR(32) NOT NULL,												#State
+    -> zip INT unsigned NOT NULL,												#Zip Code
+    -> phoneNumber INT unsigned NOT NULL, 											#Unique Phone Number 
+    -> email VARCHAR(150) NOT NULL,												#Email Id
+    -> PRIMARY KEY (phoneNumber)												#Phone Number as Primary Key
+    -> );
+Describe addressBook;
+
+_____________________________________________________________________________________________________________________________________________________________________________________________
+UC3: Ability to insert new Contacts to Address Book
+insert into addressBook (firstName, lastName, address, city, state, zip, phoneNumber, email) VALUES				#To Insert Contacts In Address Book
+('Komal', 'Shinde', 'Sion', 'Mumbai', 'Maharastra', 400017, 7718076192, 'shindeg145@gmail.com'), 
+('Ashwini', 'Hotker', 'Imampura', 'Hyderabad', 'Telangana', 500006, 9060696982, 'ashwiniH147@gmail.com'),
+('Bhakti', 'Shinde', 'Dharavi', 'Mumbai', 'Maharastra', 400018, 8080152736, 'bhaktishinde154@gmail.com');
+select * from employee;							#To Retrieving Records From Employee Table
++-----------+----------+----------+-----------+------------+--------+-------------+---------------------------+
+| firstName | lastName | address  | city      | state      | zip    | phoneNumber | email                     |
++-----------+----------+----------+-----------+------------+--------+-------------+---------------------------+
+| Komal     | Shinde   | Sion     | Mumbai    | Maharastra | 400017 |  7718076192 | shindeg145@gmail.com      |
+| Bhakti    | Shinde   | Dharavi  | Mumbai    | Maharastra | 400018 |  8080152736 | bhaktishinde154@gmail.com |
+| Ashwini   | Hotker   | Imampura | Hyderabad | Telangana  | 500006 |  9060696982 | ashwiniH147@gmail.com     |
++-----------+----------+----------+-----------+------------+--------+-------------+---------------------------+	
+
+_____________________________________________________________________________________________________________________________________________________________________________________________
+UC4: Ability to edit existing contact person using their name
+update addressBook set city = 'Hyderabad' where firstName = 'Bhakti';    							#To Modify Person Contact Using person Name
+update addressBook set city = 'Hyderabad' where firstName = 'Komal';
+update addressBook set city = 'Mumbai' where firstName = 'Bhakti';
+select * from addressBook; 													#To View Updations in Table
++-----------+----------+----------+-----------+------------+--------+-------------+---------------------------+
+| firstName | lastName | address  | city      | state      | zip    | phoneNumber | email                     |
++-----------+----------+----------+-----------+------------+--------+-------------+---------------------------+
+| Komal     | Shinde   | Sion     | Hyderabad | Maharastra | 400017 |  7718076192 | shindeg145@gmail.com      |
+| Bhakti    | Shinde   | Dharavi  | Hyderabad | Maharastra | 400018 |  8080152736 | bhaktishinde154@gmail.com |
+| Ashwini   | Hotker   | Imampura | Hyderabad | Telangana  | 500006 |  9060696982 | ashwiniH147@gmail.com     |
++-----------+----------+----------+-----------+------------+--------+-------------+---------------------------+
+
+_____________________________________________________________________________________________________________________________________________________________________________________________
+UC5:Ability to delete a person using person's name
+delete from addressBook  where firstName = 'Komal';   										#To delete Person Contact From Address Book Using Person Name
+select * from addressBook;													#To View  AddressBook table
++-----------+----------+----------+-----------+------------+--------+-------------+---------------------------+
+| firstName | lastName | address  | city      | state      | zip    | phoneNumber | email                     |
++-----------+----------+----------+-----------+------------+--------+-------------+---------------------------+
+| Bhakti    | Shinde   | Dharavi  | Mumbai    | Maharastra | 400018 |  8080152736 | bhaktishinde154@gmail.com |
+| Ashwini   | Hotker   | Imampura | Hyderabad | Telangana  | 500006 |  9060696982 | ashwiniH147@gmail.com     |
++-----------+----------+----------+-----------+------------+--------+-------------+---------------------------+
+
+_____________________________________________________________________________________________________________________________________________________________________________________________
+UC6: Ability to Retrieve Person belonging to a City or State from the Address Book
+insert into addressBook (firstName, lastName, address, city, state, zip, phoneNumber, email) VALUES      
+('Komal', 'Shinde', 'Sion', 'Mumbai', 'Maharastra', 400017, 7718076192, 'shindeg145@gmail.com');				#To Insert Person Contact In Address Book
+ select * from addressBook;
++-----------+----------+----------+-----------+------------+--------+-------------+---------------------------+			#To View  AddressBook Table
+| firstName | lastName | address  | city      | state      | zip    | phoneNumber | email                     |
++-----------+----------+----------+-----------+------------+--------+-------------+---------------------------+
+| Komal     | Shinde   | Sion     | Mumbai    | Maharastra | 400017 |  7718076192 | shindeg145@gmail.com      |
+| Bhakti    | Shinde   | Dharavi  | Mumbai    | Maharastra | 400018 |  8080152736 | bhaktishinde154@gmail.com |
+| Ashwini   | Hotker   | Imampura | Hyderabad | Telangana  | 500006 |  9060696982 | ashwiniH147@gmail.com     |
++-----------+----------+----------+-----------+------------+--------+-------------+---------------------------+
+select * from addressBook where city = 'Mumbai';										#To Retieve Person Details belonging to Same City
++-----------+----------+---------+--------+------------+--------+-------------+---------------------------+
+| firstName | lastName | address | city   | state      | zip    | phoneNumber | email                     |
++-----------+----------+---------+--------+------------+--------+-------------+---------------------------+
+| Komal     | Shinde   | Sion    | Mumbai | Maharastra | 400017 |  7718076192 | shindeg145@gmail.com      |
+| Bhakti    | Shinde   | Dharavi | Mumbai | Maharastra | 400018 |  8080152736 | bhaktishinde154@gmail.com |
++-----------+----------+---------+--------+------------+--------+-------------+---------------------------+
+
+_____________________________________________________________________________________________________________________________________________________________________________________________
+UC7:Ability to understand the count of address book by City and State
+select city, Count(firstName) from addressBook group by city;									#To Count the Number of persons in a particular city
++-----------+------------------+
+| city      | Count(firstName) |
++-----------+------------------+
+| Mumbai    |                2 |
+| Hyderabad |                1 |
++-----------+------------------+
+
+_____________________________________________________________________________________________________________________________________________________________________________________________
+UC8:Ability to retrieve entries sorted alphabetically by Person’s name for a given city
+select * from addressBook where city = 'Mumbai' ORDER BY firstName ASC; 							#To sort the Person entries alphabetically for a given city
++-----------+----------+---------+--------+------------+--------+-------------+---------------------------+
+| firstName | lastName | address | city   | state      | zip    | phoneNumber | email                     |
++-----------+----------+---------+--------+------------+--------+-------------+---------------------------+
+| Bhakti    | Shinde   | Dharavi | Mumbai | Maharastra | 400018 |  8080152736 | bhaktishinde154@gmail.com |
+| Komal     | Shinde   | Sion    | Mumbai | Maharastra | 400017 |  7718076192 | shindeg145@gmail.com      |
++-----------+----------+---------+--------+------------+--------+-------------+---------------------------+
+
+_____________________________________________________________________________________________________________________________________________________________________________________________
+UC9: Ability to identify each Address Book with name and Type.
+alter table addressBook add type VARCHAR(32) after lastName;									#To add filed Type in the Address Book
+select * from addressBook;													#To view AddressBook Table
++-----------+----------+------+----------+-----------+------------+--------+-------------+---------------------------+
+| firstName | lastName | type | address  | city      | state      | zip    | phoneNumber | email                     |
++-----------+----------+------+----------+-----------+------------+--------+-------------+---------------------------+
+| Komal     | Shinde   | NULL | Sion     | Mumbai    | Maharastra | 400017 |  7718076192 | shindeg145@gmail.com      |
+| Bhakti    | Shinde   | NULL | Dharavi  | Mumbai    | Maharastra | 400018 |  8080152736 | bhaktishinde154@gmail.com |
+| Ashwini   | Hotker   | NULL | Imampura | Hyderabad | Telangana  | 500006 |  9060696982 | ashwiniH147@gmail.com     |
++-----------+----------+------+----------+-----------+------------+--------+-------------+---------------------------+
+update addressBook set type = 'Family' where firstName = 'Komal';								#To update Type details in Address Book Table
+update addressBook set type = 'Friend' where firstName = 'Bhakti';
+update addressBook set type = 'Profession' where firstName = 'Ashwini';
+select * from addressBook;
++-----------+----------+------------+----------+-----------+------------+--------+-------------+---------------------------+
+| firstName | lastName | type       | address  | city      | state      | zip    | phoneNumber | email                     |
++-----------+----------+------------+----------+-----------+------------+--------+-------------+---------------------------+
+| Komal     | Shinde   | Family     | Sion     | Mumbai    | Maharastra | 400017 |  7718076192 | shindeg145@gmail.com      |
+| Bhakti    | Shinde   | Friend     | Dharavi  | Mumbai    | Maharastra | 400018 |  8080152736 | bhaktishinde154@gmail.com |
+| Ashwini   | Hotker   | Profession | Imampura | Hyderabad | Telangana  | 500006 |  9060696982 | ashwiniH147@gmail.com     |
++-----------+----------+------------+----------+-----------+------------+--------+-------------+---------------------------+
+
+_____________________________________________________________________________________________________________________________________________________________________________________________
+UC10:Ability to get number of contact person i.e. count by type
+select type, Count(firstName) from addressBook group by type;									#To count number of persons by type
++------------+------------------+
+| type       | Count(firstName) |
++------------+------------------+
+| Family     |                2 |
+| Friend     |                1 |
+| Profession |                1 |
++------------+------------------+
+_______________________________________________________________________________________________________________________________________________________________________________________________
+
+
