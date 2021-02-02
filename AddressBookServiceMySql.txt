@@ -19,7 +19,7 @@ create table addressBook													#To Create Table
     -> zip INT unsigned NOT NULL,												#Zip Code
     -> phoneNumber INT unsigned NOT NULL, 											#Unique Phone Number 
     -> email VARCHAR(150) NOT NULL,												#Email Id
-    -> PRIMARY KEY (phoneNumber)												#Phone Number as Primary Key
+    -> PRIMARY KEY (firstName)													#FirstName as Primary Key
     -> );
 Describe addressBook;
 
@@ -29,7 +29,7 @@ insert into addressBook (firstName, lastName, address, city, state, zip, phoneNu
 ('Komal', 'Shinde', 'Sion', 'Mumbai', 'Maharastra', 400017, 7718076192, 'shindeg145@gmail.com'), 
 ('Ashwini', 'Hotker', 'Imampura', 'Hyderabad', 'Telangana', 500006, 9060696982, 'ashwiniH147@gmail.com'),
 ('Bhakti', 'Shinde', 'Dharavi', 'Mumbai', 'Maharastra', 400018, 8080152736, 'bhaktishinde154@gmail.com');
-select * from employee;							#To Retrieving Records From Employee Table
+select * from employee;														#To Retrieving Records From Employee Table
 +-----------+----------+----------+-----------+------------+--------+-------------+---------------------------+
 | firstName | lastName | address  | city      | state      | zip    | phoneNumber | email                     |
 +-----------+----------+----------+-----------+------------+--------+-------------+---------------------------+
@@ -160,6 +160,102 @@ ER_Diagram Created and saved as AddressBookService_PersonERDiagram_MySql
 
 _____________________________________________________________________________________________________________________________________________________________________________________________
 
-UC13: 
-
+UC13: Ensure all retrieve queries done especially in UC 6, UC 7, UC 8 and UC 10 are working with new table structure
+create table PersonDetails
+    -> (
+    -> id INT unsigned NOT NULL AUTO_INCREMENT,
+    -> 	firstName VARCHAR(32) NOT NULL,
+    ->  lastName VARCHAR(32) NOT NUll,
+    ->  phoneNumber INT unsigned NOT NULL,
+    ->  email VARCHAR(150) NOT NULL,
+    ->  typeID INT NOT NULL,
+    ->  PRIMARY KEY (id)
+    -> );
+ create table PersonAddress
+    -> (
+    -> id INT unsigned NOT NULL AUTO_INCREMENT,
+    -> address VARCHAR(150) NOT NULL,
+    -> city VARCHAR(32) NOT NULL,
+    ->  state VARCHAR(32) NOT NULL,
+    -> zip INT unsigned NOT NULL,
+    ->  PRIMARY KEY (id)
+    ->  );
+ create table PersonType
+    -> (
+    -> typeID INT NOT NULL,
+    -> type VARCHAR(32),
+    ->  PRIMARY KEY (typeId)
+    -> );
+insert into PersonDetails (firstName, lastName,phoneNumber, email,typeId) VALUES ('Komal', 'Shinde',7718076192, 'shindeg145@gmail.com',3),('Ashwini', 'Hotker',9060696982, 'ashwiniH147@gmail.com',2),('Bhakti', 'Shinde',8080152736, 'bhaktishinde154@gmail.com',1),('Anita','Hotker',8974562453,'anita152@gmail.com',2),('Lakhan','Hotker',8936542174,'lakhanHotker124@gamil.com',2),('Sudhir', 'Shinde',7719145232,'shindesudhir8045@gmail.com ',1);
+select * from personDetails;
++----+-----------+----------+-------------+-----------------------------+--------+
+| id | firstName | lastName | phoneNumber | email                       | typeId |
++----+-----------+----------+-------------+-----------------------------+--------+
+|  1 | Komal     | Shinde   |  7718076192 | shindeg145@gmail.com        |      3 |
+|  2 | Ashwini   | Hotker   |  9060696982 | ashwiniH147@gmail.com       |      2 |
+|  3 | Bhakti    | Shinde   |  8080152736 | bhaktishinde154@gmail.com   |      1 |
+|  4 | Anita     | Hotker   |  8974562453 | anita152@gmail.com          |      2 |
+|  5 | Lakhan    | Hotker   |  8936542174 | lakhanHotker124@gamil.com   |      2 |
+|  6 | Sudhir    | Shinde   |  7719145232 | shindesudhir8045@gmail.com  |      1 |
++----+-----------+----------+-------------+-----------------------------+--------+
+insert into PersonAddress (address,city,state,zip) VALUES ('Jiyaguda','Hyderabad','Telangana',500012),('Imampura', 'Hyderabad', 'Telangana', 500006),('Dharavi', 'Mumbai', 'Maharastra', 400018),('Sion', 'Mumbai', 'Maharastra', 400017),('JubliHills','Hyderabad','Telangana',500008),('Dharavi','Mumbai', 'Maharastra', 400018);
+select * from personAddress;
++----+------------+-----------+------------+--------+
+| id | address    | city      | state      | zip    |
++----+------------+-----------+------------+--------+
+|  1 | Jiyaguda   | Hyderabad | Telangana  | 500012 |
+|  2 | Imampura   | Hyderabad | Telangana  | 500006 |
+|  3 | Dharavi    | Mumbai    | Maharastra | 400018 |
+|  4 | Sion       | Mumbai    | Maharastra | 400017 |
+|  5 | JubliHills | Hyderabad | Telangana  | 500008 |
+|  6 | Dharavi    | Mumbai    | Maharastra | 400018 |
++----+------------+-----------+------------+--------+
+insert into PersonType (type) VAlUES ('Family'),('Friend'),('Profession');
+select * from PersonType;
++--------+------------+
+| typeId | type       |
++--------+------------+
+|      1 | Family     |
+|      2 | Friend     |
+|      3 | Profession |
++--------+------------+
+update personAddress,personDetails set city = 'Hyderabad' where PersonDetails.id=PersonAddress.id and personDetails.firstName = 'Bhakti';
+Query OK, 1 row affected (0.12 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+select * from PersonDetails,PersonAddress where PersonDetails.id=PersonAddress.id and personAddress.city='Mumbai';
++----+-----------+----------+-------------+-----------------------------+--------+----+---------+--------+------------+--------+
+| id | firstName | lastName | phoneNumber | email                       | typeId | id | address | city   | state      | zip    |
++----+-----------+----------+-------------+-----------------------------+--------+----+---------+--------+------------+--------+
+|  4 | Anita     | Hotker   |  8974562453 | anita152@gmail.com          |      2 |  4 | Sion    | Mumbai | Maharastra | 400017 |
+|  6 | Sudhir    | Shinde   |  7719145232 | shindesudhir8045@gmail.com  |      1 |  6 | Dharavi | Mumbai | Maharastra | 400018 |
++----+-----------+----------+-------------+-----------------------------+--------+----+---------+--------+------------+--------+
+ select city,count(firstName) from PersonDetails,PersonAddress where PersonDetails.id=PersonAddress.id group by city;
++-----------+------------------+
+| city      | count(firstName) |
++-----------+------------------+
+| Hyderabad |                4 |
+| Mumbai    |                2 |
++-----------+------------------+
+select state,count(firstName) from PersonDetails,PersonAddress where PersonDetails.id=PersonAddress.id group by state;
++------------+------------------+
+| state      | count(firstName) |
++------------+------------------+
+| Telangana  |                3 |
+| Maharastra |                3 |
++------------+------------------+
+select * from PersonDetails,PersonAddress where PersonDetails.id=PersonAddress.id and personAddress.city='Mumbai' ORDER BY firstName ASC;
++----+-----------+----------+-------------+-----------------------------+--------+----+---------+--------+------------+--------+
+| id | firstName | lastName | phoneNumber | email                       | typeId | id | address | city   | state      | zip    |
++----+-----------+----------+-------------+-----------------------------+--------+----+---------+--------+------------+--------+
+|  4 | Anita     | Hotker   |  8974562453 | anita152@gmail.com          |      2 |  4 | Sion    | Mumbai | Maharastra | 400017 |
+|  6 | Sudhir    | Shinde   |  7719145232 | shindesudhir8045@gmail.com  |      1 |  6 | Dharavi | Mumbai | Maharastra | 400018 |
++----+-----------+----------+-------------+-----------------------------+--------+----+---------+--------+------------+--------+
+select type,count(firstName) from PersonDetails,PersonType where PersonDetails.typeId=PersonType.typeId group by type;
++------------+------------------+
+| type       | count(firstName) |
++------------+------------------+
+| Profession |                1 |
+| Friend     |                3 |
+| Family     |                2 |
++------------+------------------+
 
