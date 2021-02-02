@@ -136,6 +136,30 @@ select type, Count(firstName) from addressBook group by type;									#To count 
 | Friend     |                1 |
 | Profession |                1 |
 +------------+------------------+
-_______________________________________________________________________________________________________________________________________________________________________________________________
+_____________________________________________________________________________________________________________________________________________________________________________________________
+
+UC11: Ability to add person to both family and friend
+ insert into addressbook (firstName,lastName,type,address,city,state,zip,phoneNumber,email) VALUES ('Anita','Hotker','Friend','Jiyaguda','Hyderabad','Telangana',500012,8974562453,'anita152@gmail.com');
+insert into addressbook (firstName,lastName,type,address,city,state,zip,phoneNumber,email) VALUES ('Lakhan','Hotker','Family','JubliHills','Hyderabad','Telangana',500008,8936542174,'lakhanHotker124@gamil.com');
+select * from addressbook;
++-----------+----------+------------+------------+-----------+------------+--------+-------------+----------------------------+
+| firstName | lastName | type       | address    | city      | state      | zip    | phoneNumber | email                      |
++-----------+----------+------------+------------+-----------+------------+--------+-------------+----------------------------+
+| Komal     | Shinde   | Family     | Sion       | Mumbai    | Maharastra | 400017 |  7718076192 | shindeg145@gmail.com       |
+| Sudir     | Shinde   | Family     | Sion       | Mumbai    | Maharastra | 400017 |  7719145232 | shindesudhir8045@gmail.com |
+| Bhakti    | Shinde   | Friend     | Dharavi    | Mumbai    | Maharastra | 400018 |  8080152736 | bhaktishinde154@gmail.com  |
+| Lakhan    | Hotker   | Family     | JubliHills | Hyderabad | Telangana  | 500008 |  8936542174 | lakhanHotker124@gamil.com  |
+| Anita     | Hotker   | Friend     | Jiyaguda   | Hyderabad | Telangana  | 500012 |  8974562453 | anita152@gmail.com         |
+| Ashwini   | Hotker   | Profession | Imampura   | Hyderabad | Telangana  | 500006 |  9060696982 | ashwiniH147@gmail.com      |
++-----------+----------+------------+------------+-----------+------------+--------+-------------+----------------------------+
+
+_____________________________________________________________________________________________________________________________________________________________________________________________
+
+UC12:Draw the ER Diagram for Address Book Service DB
+ER_Diagram Created and saved as AddressBookService_PersonERDiagram_MySql
+
+_____________________________________________________________________________________________________________________________________________________________________________________________
+
+UC13: 
 
 
